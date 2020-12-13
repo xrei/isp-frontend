@@ -13,7 +13,13 @@ export const request = (apiBase: string) => (config: RequestConfig) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((resp) => resp.json())
+  })
+    .then((response) => {
+      return response.text()
+    })
+    .then((data) => {
+      return data ? JSON.parse(data) : {}
+    })
 }
 
 export const createRequest = request

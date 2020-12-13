@@ -1,41 +1,54 @@
 import React from 'react'
 import { NavLink as Link } from 'react-router-dom'
-import styled from 'styled-components'
+import {
+  makeStyles,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Theme,
+} from '@material-ui/core'
+import {
+  People as PeopleIcon,
+  Home as HomeIcn,
+  Note as NoteIcon,
+} from '@material-ui/icons'
+import { onClose as ToggleDrawer } from './model'
 import { appRoutes } from 'src/routes'
-import { toggleMenu } from './model'
+
+const DrawerWidth = 250
 
 export const MenuList: React.FC = () => {
+  const classess = styles()
   return (
-    <Menulist>
-      {appRoutes.map((v, i) => (
-        <ListItem exact key={i} to={v.path} onClick={() => toggleMenu()}>
-          {v.title}
-        </ListItem>
-      ))}
-    </Menulist>
+    <div className={classess.list} onClick={() => ToggleDrawer()}>
+      <List>
+        {appRoutes.map((v, i) => (
+          <ListItem
+            button
+            component={Link}
+            activeClassName={classess.active}
+            exact
+            key={i}
+            to={v.path}
+            onClick={() => ToggleDrawer()}
+          >
+            <ListItemIcon>
+              <HomeIcn></HomeIcn>
+            </ListItemIcon>
+            <ListItemText>{v.title}</ListItemText>
+          </ListItem>
+        ))}
+      </List>
+    </div>
   )
 }
 
-const Menulist = styled.div`
-  display: flex;
-  flex-flow: column;
-`
-
-const ListItem = styled(Link)`
-  display: flex;
-  color: #212121;
-  font-size: 18px;
-  font-weight: 500;
-  margin: 10px 0 0;
-  text-decoration: none;
-
-  &::last-child {
-    margin-bottom: 0;
-  }
-
-  &.active,
-  &:hover {
-    text-decoration: underline;
-    color: #00b0ff;
-  }
-`
+const styles = makeStyles((t: Theme) => ({
+  list: {
+    width: DrawerWidth,
+  },
+  active: {
+    color: t.palette.secondary.main,
+  },
+}))

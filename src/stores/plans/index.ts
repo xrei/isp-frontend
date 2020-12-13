@@ -1,5 +1,4 @@
 import { createStore, createEffect, createEvent, forward } from 'effector'
-import { openModal, closeModal } from 'src/ui/Modals'
 import { api } from 'src/api'
 
 type Plan = {
@@ -16,9 +15,7 @@ export const $plan = createStore<Plan | null>(null)
 export const $isEditPlan = createStore(false)
 export const editPlan = createEvent<Plan>()
 
-editPlan.watch(() => {
-  openModal('plans')
-})
+editPlan.watch(() => {})
 
 $isEditPlan.on(editPlan, () => true)
 $plan.on(editPlan, (_, plan) => plan)
@@ -51,7 +48,6 @@ editPlanFx.use(async (plan) => {
   }
   const res = await api.plans.edit(plan.id, params)
 
-  closeModal()
   return plan
 })
 
@@ -59,8 +55,8 @@ $plans.on(editPlanFx.doneData, (state, p) =>
   state.map((plan) => (plan.id === p.id ? p : plan)),
 )
 
-$plan.reset([editPlanFx.done, closeModal])
-$isEditPlan.reset([editPlanFx.done, closeModal])
+// $plan.reset([editPlanFx.done, closeModal])
+// $isEditPlan.reset([editPlanFx.done, closeModal])
 
 $plan.watch((state) => console.log(state))
 
@@ -70,7 +66,7 @@ addPlanFx.use(async (params) => {
   console.log(res)
   if (res.error) throw Error(res.error)
 
-  closeModal()
+  // closeModal()
   return res.data
 })
 

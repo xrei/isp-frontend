@@ -1,7 +1,10 @@
-import { createStore, createEvent } from 'effector'
+import { createEvent, createStore } from 'effector'
 
-export const $menuState = createStore(false)
+export let onOpen = createEvent()
+export let onClose = createEvent()
+export let toggle = createEvent()
 
-export const toggleMenu = createEvent('toggleMenu')
-
-$menuState.on(toggleMenu, (state) => !state)
+export let $drawer = createStore(false)
+  .on(onOpen, () => true)
+  .on(onClose, () => false)
+  .on(toggle, (state) => !state)

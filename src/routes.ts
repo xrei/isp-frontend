@@ -6,6 +6,7 @@ type Routes = {
     path: string
     title: string
     view: React.FC
+    icon?: any
   }
 }
 
