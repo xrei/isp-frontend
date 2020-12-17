@@ -1,22 +1,33 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NavLink as Link } from 'react-router-dom'
+import { Grid, Typography } from '@material-ui/core'
 
 export const Main: React.FC = () => {
   return (
     <div className="main">
       <h1>Internet service provider admin app</h1>
-      <Cards>
-        <Card to="/abonents">Abonents</Card>
-        <Card to="/plans">Plans</Card>
-      </Cards>
+      <Typography>Navigation:</Typography>
+      <Grid container>
+        <Grid item>
+          <Card to="/abonents">Abonents</Card>
+        </Grid>
+        <Grid item>
+          <Card to="/plans">Plans</Card>
+        </Grid>
+        <Grid item>
+          <Card to="/support-requests">Support requests</Card>
+        </Grid>
+        <Grid item>
+          <Card to="/equipments">Equipments</Card>
+        </Grid>
+        <Grid item>
+          <Card to="/employees">Employees</Card>
+        </Grid>
+      </Grid>
     </div>
   )
 }
-
-const Cards = styled.div`
-  max-width: 500px;
-`
 
 const Card = styled(Link)`
   padding: 32px;

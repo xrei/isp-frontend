@@ -36,6 +36,7 @@ import {
   InputLabel,
   FormControl,
   Box,
+  Grid,
 } from '@material-ui/core'
 
 export const Abonents: React.FC = () => {
@@ -53,64 +54,68 @@ export const Abonents: React.FC = () => {
   const abonents = useStore($abonents)
 
   return (
-    <div>
-      <Typography gutterBottom variant="h3">
-        Abonents
-      </Typography>
+    <Grid style={{ height: '100%' }} container>
+      <Box p={2} width="100%">
+        <Grid item xs={12}>
+          <Typography gutterBottom variant="h3">
+            Abonents
+          </Typography>
+        </Grid>
 
-      <Box marginBottom={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => createAbonent()}
-        >
-          Create new Abonent
-        </Button>
-      </Box>
+        <Box marginBottom={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => createAbonent()}
+          >
+            Create new Abonent
+          </Button>
+        </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Plan</TableCell>
-              <TableCell align="right">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {abonents.map((abon) => (
-              <TableRow key={abon.name}>
-                <TableCell>{abon.id}</TableCell>
-                <TableCell>{abon.name}</TableCell>
-                <TableCell>{abon.lastName}</TableCell>
-                <TableCell>{abon.planId}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    style={{ marginRight: '12px' }}
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => handleOpenEdit(abon)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => deleteAbonentFx(abon.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Id</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Last Name</TableCell>
+                <TableCell>Plan</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {abonents.map((abon) => (
+                <TableRow key={abon.name}>
+                  <TableCell>{abon.id}</TableCell>
+                  <TableCell>{abon.name}</TableCell>
+                  <TableCell>{abon.lastName}</TableCell>
+                  <TableCell>{abon.plan?.name}</TableCell>
+                  <TableCell align="right">
+                    <Button
+                      style={{ marginRight: '12px' }}
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleOpenEdit(abon)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => deleteAbonentFx(abon.id)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      {isEdit && <EditAbonentDialog></EditAbonentDialog>}
-    </div>
+        {isEdit && <EditAbonentDialog></EditAbonentDialog>}
+      </Box>
+    </Grid>
   )
 }
 
@@ -123,13 +128,11 @@ const EditAbonentDialog: React.FC = () => {
   const [state, setState] = React.useState<{
     name: string
     lastName: string
-    plan: string
     planId: number
   }>({
     name: '',
     lastName: '',
     planId: defaultPlanId,
-    plan: '',
   })
 
   React.useEffect(() => {
@@ -138,7 +141,6 @@ const EditAbonentDialog: React.FC = () => {
         name: abonent.name,
         lastName: abonent.lastName,
         planId: abonent.planId,
-        plan: abonent.plan,
       })
     }
   }, [])

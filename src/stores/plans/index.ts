@@ -1,10 +1,11 @@
 import { createStore, createEffect, createEvent, forward } from 'effector'
 import { api } from 'src/api'
 
-type Plan = {
+export type Plan = {
   name: string
   price: number
   id: number
+  activeUsers?: number
 }
 
 type PlanBody = Omit<Plan, 'id'>
@@ -12,12 +13,15 @@ type PlanBody = Omit<Plan, 'id'>
 export const $plans = createStore<Plan[]>([])
 export const $plan = createStore<Plan | null>(null)
 
-export const $isEditPlan = createStore(false)
+export const $planModal = createStore(false)
 export const editPlan = createEvent<Plan>()
+export const createPlan = createEvent()
+export const cancelEditPlan = createEvent()
 
-editPlan.watch(() => {})
+$planModal.on(editPlan, () => true)
+$planModal.on(createPlan, () => true)
+$planModal.on(cancelEditPlan, () => false)
 
-$isEditPlan.on(editPlan, () => true)
 $plan.on(editPlan, (_, plan) => plan)
 
 export const getPlansFx = createEffect<void, Plan[]>()
@@ -43,11 +47,12 @@ $plans.on(deletePlanFx.doneData, (state, id) =>
 export const editPlanFx = createEffect<Plan, Plan>()
 editPlanFx.use(async (plan) => {
   const params = {
+    id: plan.id,
     name: plan.name,
-    price: plan.price,
+    price: Number(plan.price),
   }
   const res = await api.plans.edit(plan.id, params)
-
+  console.log(res)
   return plan
 })
 
@@ -55,19 +60,15 @@ $plans.on(editPlanFx.doneData, (state, p) =>
   state.map((plan) => (plan.id === p.id ? p : plan)),
 )
 
-// $plan.reset([editPlanFx.done, closeModal])
-// $isEditPlan.reset([editPlanFx.done, closeModal])
-
-$plan.watch((state) => console.log(state))
-
 export const addPlanFx = createEffect<PlanBody, Plan>()
 addPlanFx.use(async (params) => {
   const res = await api.plans.add(params)
   console.log(res)
   if (res.error) throw Error(res.error)
 
-  // closeModal()
-  return res.data
+  return res
 })
 
 $plans.on(addPlanFx.doneData, (state, plan) => [...state, plan])
+$plan.reset([editPlanFx.done, cancelEditPlan])
+$planModal.reset([editPlanFx.done, cancelEditPlan, addPlanFx.done])

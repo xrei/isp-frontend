@@ -7,40 +7,63 @@ import {
   ListItemIcon,
   ListItemText,
   Theme,
+  Divider,
 } from '@material-ui/core'
 import {
-  People as PeopleIcon,
+  AccountBox as AccountBoxIcon,
   Home as HomeIcn,
   Note as NoteIcon,
+  Accessible as AccessibleIcon,
+  Group as GroupIcon,
 } from '@material-ui/icons'
 import { onClose as ToggleDrawer } from './model'
-import { appRoutes } from 'src/routes'
+import { Routes } from 'src/routes'
 
 const DrawerWidth = 250
 
 export const MenuList: React.FC = () => {
   const classess = styles()
+  const { root, abonents, plans, supportRequests, employees } = Routes
+
   return (
     <div className={classess.list} onClick={() => ToggleDrawer()}>
       <List>
-        {appRoutes.map((v, i) => (
-          <ListItem
-            button
-            component={Link}
-            activeClassName={classess.active}
-            exact
-            key={i}
-            to={v.path}
-            onClick={() => ToggleDrawer()}
-          >
-            <ListItemIcon>
-              <HomeIcn></HomeIcn>
-            </ListItemIcon>
-            <ListItemText>{v.title}</ListItemText>
-          </ListItem>
-        ))}
+        <MenuItem route={root}>
+          <HomeIcn />
+        </MenuItem>
+        <Divider></Divider>
+        <MenuItem route={abonents}>
+          <AccountBoxIcon />
+        </MenuItem>
+        <MenuItem route={plans}>
+          <NoteIcon />
+        </MenuItem>
+        <MenuItem route={supportRequests}>
+          <AccessibleIcon />
+        </MenuItem>
+        <MenuItem route={employees}>
+          <GroupIcon />
+        </MenuItem>
       </List>
     </div>
+  )
+}
+
+const MenuItem: React.FC<{ route: any }> = ({ route, children }) => {
+  const classess = styles()
+
+  return (
+    <ListItem
+      button
+      component={Link}
+      activeClassName={classess.active}
+      exact
+      to={route.path}
+      onClick={() => ToggleDrawer()}
+    >
+      <ListItemIcon>{children}</ListItemIcon>
+      <ListItemText>{route.title}</ListItemText>
+    </ListItem>
   )
 }
 

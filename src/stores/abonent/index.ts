@@ -1,10 +1,11 @@
 import { createStore, createEffect, createEvent, forward } from 'effector'
 import { api } from 'src/api'
+import type { Plan } from '../plans'
 
 export type Abonent = {
   name: string
   lastName: string
-  plan: string
+  plan?: Plan
   planId: number
   id: number
 }
@@ -53,12 +54,6 @@ addAbonentFx.use(async (params) => {
   if (res.error) throw Error('Some err')
 
   return res
-})
-
-addAbonentFx.watch(console.log)
-$abonents.watch((xs) => {
-  console.log('abonents watched')
-  console.log(xs)
 })
 
 $abonents

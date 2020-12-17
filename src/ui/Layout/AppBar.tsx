@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
   AppBar as MuiAppBar,
   Toolbar,
@@ -6,10 +7,15 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core'
-import { Menu as MenuIcon, Search as SearchIcon } from '@material-ui/icons'
+import {
+  Menu as MenuIcon,
+  Search as SearchIcon,
+  ArrowBack as ArrowBackIcon,
+} from '@material-ui/icons'
 import { makeStyles, createStyles } from '@material-ui/styles'
 import { toggle as DrawerToggle } from './model'
 import { HideOnScroll } from './HideOnScroll'
+import { history } from 'src/routes'
 
 type Props = {
   title: string
@@ -17,6 +23,16 @@ type Props = {
 
 export const AppBar: React.FC<Props> = ({ title }) => {
   const classes = useStyles()
+  const loc = useLocation()
+  const [isRoot, changeIsRoot] = useState(false)
+  useEffect(() => {
+    if (loc.pathname === '/') changeIsRoot(true)
+    else changeIsRoot(false)
+  }, [loc])
+
+  const goBack = () => {
+    history.goBack()
+  }
 
   return (
     <div>
@@ -32,6 +48,13 @@ export const AppBar: React.FC<Props> = ({ title }) => {
             >
               <MenuIcon />
             </IconButton>
+
+            {!isRoot && (
+              <IconButton edge="start" color="inherit" onClick={() => goBack()}>
+                <ArrowBackIcon></ArrowBackIcon>
+              </IconButton>
+            )}
+
             <Typography className={classes.title} variant="h6" noWrap>
               {title}
             </Typography>

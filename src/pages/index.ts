@@ -1,3 +1,7 @@
 export { Abonents } from './abonents'
 export { Plans } from './plans'
 export { Main } from './root'
+export { SupportRequests } from './support-requests'
+export { EmployeesPage } from './employees'
+export { CreateEmployeePage } from './employees/create'
+export { EquipmentsPage } from './equipments'
