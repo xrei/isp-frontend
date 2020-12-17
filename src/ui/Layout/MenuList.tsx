@@ -15,6 +15,7 @@ import {
   Note as NoteIcon,
   Accessible as AccessibleIcon,
   Group as GroupIcon,
+  Storage as StorageIcon,
 } from '@material-ui/icons'
 import { onClose as ToggleDrawer } from './model'
 import { Routes } from 'src/routes'
@@ -23,7 +24,14 @@ const DrawerWidth = 250
 
 export const MenuList: React.FC = () => {
   const classess = styles()
-  const { root, abonents, plans, supportRequests, employees } = Routes
+  const {
+    root,
+    abonents,
+    plans,
+    supportRequests,
+    employees,
+    equipments,
+  } = Routes
 
   return (
     <div className={classess.list} onClick={() => ToggleDrawer()}>
@@ -43,6 +51,9 @@ export const MenuList: React.FC = () => {
         </MenuItem>
         <MenuItem route={employees}>
           <GroupIcon />
+        </MenuItem>
+        <MenuItem route={equipments}>
+          <StorageIcon />
         </MenuItem>
       </List>
     </div>
