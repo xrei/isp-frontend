@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, CssBaseline, makeStyles } from '@material-ui/core'
 import { AppBar } from './AppBar'
 import { SideMenu } from './SideMenu'
+import { AppAlert } from '../ErrorAlert/index'
 
 type Props = {
   children: NonNullable<React.ReactNode>
@@ -20,6 +21,7 @@ export const MainLayout: React.FC<Props> = ({ children, title }) => {
           {children}
         </Container>
       </main>
+      <AppAlert />
     </div>
   )
 }

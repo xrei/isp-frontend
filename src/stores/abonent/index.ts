@@ -2,7 +2,7 @@ import { createStore, createEffect, createEvent, forward } from 'effector'
 import { api } from 'src/api'
 import type { Plan } from '../plans'
 
-export type Abonent = {
+export interface Abonent {
   name: string
   lastName: string
   plan?: Plan
@@ -45,7 +45,7 @@ deleteAbonentFx.use(async (id) => {
 export const editAbonentFx = createEffect<Abonent, Abonent>()
 editAbonentFx.use(async (abonent) => {
   const res = await api.users.edit(abonent.id, abonent)
-  return abonent
+  return res as Abonent
 })
 
 export const addAbonentFx = createEffect<AbonentBody, Abonent>()

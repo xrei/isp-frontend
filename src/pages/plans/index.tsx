@@ -134,7 +134,7 @@ const EditPlanDialog: React.FC = () => {
     console.log(state)
     if (state.name && state.price) {
       if (plan) {
-        editPlanFx({ id: plan.id, ...state })
+        editPlanFx({ ...plan, ...state })
       } else {
         addPlanFx(state)
       }

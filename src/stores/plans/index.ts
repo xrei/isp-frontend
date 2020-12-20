@@ -1,5 +1,6 @@
 import { createStore, createEffect, createEvent, forward } from 'effector'
 import { api } from 'src/api'
+import { showErrorAlert } from 'src/ui/ErrorAlert/model'
 
 export type Plan = {
   name: string
@@ -33,11 +34,17 @@ getPlansFx.use(async () => {
 
 $plans.on(getPlansFx.doneData, (state, payload) => payload)
 
-export const deletePlanFx = createEffect<number, number>()
+export const deletePlanFx = createEffect<number, number, Error>()
 deletePlanFx.use(async (id) => {
-  const res = await api.plans.delete(id)
-  console.log(res)
-  return id
+  try {
+    const res = await api.plans.delete(id)
+    console.log(res)
+    return id
+  } catch (err) {
+    console.log(err)
+    showErrorAlert({ show: true, message: err.message })
+    throw err
+  }
 })
 
 $plans.on(deletePlanFx.doneData, (state, id) =>

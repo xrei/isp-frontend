@@ -74,11 +74,11 @@ export const EquipmentsPage: React.FC = () => {
                     </Typography>
                   </CardContent>
                 </CardActionArea>
-                <CardActions>
+                {/* <CardActions>
                   <Button size="small" color="primary">
                     Details
                   </Button>
-                </CardActions>
+                </CardActions> */}
               </Card>
             </Grid>
           )

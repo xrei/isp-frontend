@@ -48,5 +48,7 @@ updateSupportRequestFx.use(async (payload) => {
 })
 
 $supRequests.on(updateSupportRequestFx.doneData, (state, newData) =>
-  state.map((x) => (newData.id === x.id ? x : newData)),
+  state.map((x) => (newData.id !== x.id ? x : newData)),
 )
+
+$answerDialog.on(updateSupportRequestFx.done, () => false)

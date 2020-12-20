@@ -14,11 +14,16 @@ export const request = (apiBase: string) => (config: RequestConfig) => {
       'Content-Type': 'application/json',
     },
   })
-    .then((response) => {
-      return response.text()
+    .then((r) => {
+      console.log(r)
+      if (r.ok) {
+        return r.json()
+      } else {
+        throw r
+      }
     })
-    .then((data) => {
-      return data ? JSON.parse(data) : {}
+    .catch(async (err) => {
+      throw await err.json()
     })
 }
 
