@@ -1,17 +1,23 @@
 import { createEvent, createStore } from 'effector'
 
-export type AlertStore = {
-  show: boolean
+type Alert = {
+  show?: boolean
   message: string
+  type?: 'success' | 'error'
 }
 
-export const $errAlert = createStore({
+export const $errAlert = createStore<Alert>({
   show: false,
   message: '',
+  type: 'success',
 })
 
-export const showErrorAlert = createEvent<AlertStore>()
-export const hideErrorAlert = createEvent()
+export const showAlert = createEvent<Alert>()
+export const hideAlert = createEvent()
 
-$errAlert.on(showErrorAlert, (old, newState) => newState)
-$errAlert.on(hideErrorAlert, () => ({ show: false, message: '' }))
+$errAlert.on(showAlert, (old, newState) => ({
+  show: true,
+  type: 'success',
+  ...newState,
+}))
+$errAlert.reset(hideAlert)

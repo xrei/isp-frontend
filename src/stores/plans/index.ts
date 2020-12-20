@@ -1,6 +1,6 @@
 import { createStore, createEffect, createEvent, forward } from 'effector'
 import { api } from 'src/api'
-import { showErrorAlert } from 'src/ui/ErrorAlert/model'
+import { showAlert } from 'src/ui/ErrorAlert/model'
 
 export type Plan = {
   name: string
@@ -42,7 +42,7 @@ deletePlanFx.use(async (id) => {
     return id
   } catch (err) {
     console.log(err)
-    showErrorAlert({ show: true, message: err.message })
+    showAlert({ show: true, message: err.message, type: 'error' })
     throw err
   }
 })
